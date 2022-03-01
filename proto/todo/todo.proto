@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+option go_package = "gitlab.com/sive-agc/proto/todo/gen";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+package rpctodo;
+
+service Todos {
+    rpc CreateTodo (CreateTodoReq) returns (CreateTodoResp) {}
+    rpc ReadTodo (ReadTodoReq) returns (ReadTodoResp) {}
+    rpc ReadAllTodo (ReadAllTodoReq) returns (ReadAllTodoResp) {}
+    rpc UpdateTodo (UpdateTodoReq) returns (ReadTodoResp) {}
+    rpc DeleteTodo (DeleteTodoReq) returns (DeleteTodoResp) {}
+}
+
+message TodoWithMeta {
+    uint64 id = 1;
+    string title = 2;
+    string description = 3;
+    google.protobuf.Timestamp deadline = 4;
+    string assignee = 5;
+    google.protobuf.Duration time_allocated = 6;
+    TodoStatus status = 7; 
+}
+
+enum TodoStatus {
+    TODO_STATUS_PENDING = 0;
+    TODO_STATUS_DOING = 1;
+    TODO_STATUS_DONE = 2;
+    TODO_STATUS_CANCELED = 3;
+    TODO_STATUS_EXPIRED = 4;
+}
+
+message CreateTodoReq {
+    TodoWithMeta todo = 1;
+}
+
+message CreateTodoResp {
+    uint64 id = 1;
+}
+
+message ReadTodoReq {
+    uint64 id = 1;
+}
+
+message ReadTodoResp {
+    TodoWithMeta todo = 1;
+}
+
+message ReadAllTodoReq {
+    repeated uint64 id = 1;
+}
+
+message ReadAllTodoResp {
+    repeated TodoWithMeta todo = 1;
+}
+
+message UpdateTodoReq {
+    TodoWithMeta todo = 1;
+}
+
+message UpdateTodoResp {}
+
+message DeleteTodoReq {
+    uint64 id = 1;
+}
+
+message DeleteTodoResp {}
+
