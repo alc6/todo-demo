@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-option go_package = "gitlab.com/sive-agc/proto/todo/gen";
+option go_package = "github.com/alc6/todo-demo/proto/todorpc";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 
-package rpctodo;
+package todorpc;
 
 service Todos {
     rpc CreateTodo (CreateTodoReq) returns (CreateTodoResp) {}
