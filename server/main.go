@@ -32,11 +32,14 @@ func main() {
 
 	todoServices := NewTodosGRPCService(logger, todoStore)
 
-	grpcServer := grpc.NewServer()
+	iServer, errNewGrpcServ := newInstrumentedGRPCServer()
+	if errNewGrpcServ != nil {
+		logger.Sugar().Panicw("Failed to create instrumented grpc server", "error", errNewGrpcServ)
+	}
 
-	todorpc.RegisterTodosServer(grpcServer, todoServices)
+	todorpc.RegisterTodosServer(iServer.grpcServer, todoServices)
 
-	stopGRPCServer, errStartServ := startGRPCServer(logger, grpcServer, defaultGRPCPort, gRPCReflect)
+	stopGRPCServer, errStartServ := startGRPCServer(logger, iServer.grpcServer, defaultGRPCPort, gRPCReflect)
 	if errStartServ != nil {
 		logger.Sugar().Panicw("Failed to start the server", "error", errStartServ)
 	}
@@ -44,6 +47,7 @@ func main() {
 	<-sigs
 
 	stopGRPCServer()
+	iServer.openTraceCloser.Close()
 
 	time.Sleep(500 * time.Millisecond) // Give some time to the goroutines to stop properly.
 }
