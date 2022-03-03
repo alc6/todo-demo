@@ -1,22 +1,22 @@
 syntax = "proto3";
 
-option go_package = "gitlab.com/sive-agc/proto/todo/gen";
+option go_package = "github.com/alc6/todo-demo/proto/todorpc";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 
-package rpctodo;
+package todorpc;
 
 service Todos {
     rpc CreateTodo (CreateTodoReq) returns (CreateTodoResp) {}
     rpc ReadTodo (ReadTodoReq) returns (ReadTodoResp) {}
     rpc ReadAllTodo (ReadAllTodoReq) returns (ReadAllTodoResp) {}
-    rpc UpdateTodo (UpdateTodoReq) returns (ReadTodoResp) {}
+    rpc UpdateTodo (UpdateTodoReq) returns (UpdateTodoResp) {}
     rpc DeleteTodo (DeleteTodoReq) returns (DeleteTodoResp) {}
 }
 
 message TodoWithMeta {
-    uint64 id = 1;
+    string id = 1;
     string title = 2;
     string description = 3;
     google.protobuf.Timestamp deadline = 4;
@@ -38,11 +38,11 @@ message CreateTodoReq {
 }
 
 message CreateTodoResp {
-    uint64 id = 1;
+    string id = 1;
 }
 
 message ReadTodoReq {
-    uint64 id = 1;
+    string id = 1;
 }
 
 message ReadTodoResp {
@@ -64,7 +64,7 @@ message UpdateTodoReq {
 message UpdateTodoResp {}
 
 message DeleteTodoReq {
-    uint64 id = 1;
+    string id = 1;
 }
 
 message DeleteTodoResp {}
