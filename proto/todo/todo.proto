@@ -16,7 +16,7 @@ service Todos {
 }
 
 message TodoWithMeta {
-    uint64 id = 1;
+    string id = 1;
     string title = 2;
     string description = 3;
     google.protobuf.Timestamp deadline = 4;
@@ -38,11 +38,11 @@ message CreateTodoReq {
 }
 
 message CreateTodoResp {
-    uint64 id = 1;
+    string id = 1;
 }
 
 message ReadTodoReq {
-    uint64 id = 1;
+    string id = 1;
 }
 
 message ReadTodoResp {
@@ -64,7 +64,7 @@ message UpdateTodoReq {
 message UpdateTodoResp {}
 
 message DeleteTodoReq {
-    uint64 id = 1;
+    string id = 1;
 }
 
 message DeleteTodoResp {}

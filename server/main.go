@@ -2,7 +2,12 @@ package main
 
 import (
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
+
+	"github.com/alc6/todo-demo/server/store"
 
 	"github.com/alc6/todo-demo/proto/todorpc"
 	"go.uber.org/zap"
@@ -10,30 +15,37 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-const defaultGRPCPort = ":27015"
+const (
+	defaultGRPCPort = ":27015"
+	gRPCReflect     = true
+)
 
 func main() {
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+
 	logger := NewZapLogger()
 
 	logger.Info("Starting server...")
 
-	todoServices := NewTodosGRPCService(logger)
+	todoStore := store.NewMapStore(logger)
+
+	todoServices := NewTodosGRPCService(logger, todoStore)
 
 	grpcServer := grpc.NewServer()
 
 	todorpc.RegisterTodosServer(grpcServer, todoServices)
 
-	stopGRPCServer, errStartServ := startGRPCServer(logger, grpcServer, defaultGRPCPort, true)
+	stopGRPCServer, errStartServ := startGRPCServer(logger, grpcServer, defaultGRPCPort, gRPCReflect)
 	if errStartServ != nil {
 		logger.Sugar().Panicw("Failed to start the server", "error", errStartServ)
 	}
 
-	time.Sleep(5 * time.Second)
+	<-sigs
 
 	stopGRPCServer()
 
-	time.Sleep(200 * time.Millisecond)
-
+	time.Sleep(500 * time.Millisecond) // Give some time to the goroutines to stop properly.
 }
 
 // startGRPCServer starts the provided server with previously associated services.
