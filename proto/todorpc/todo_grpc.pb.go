@@ -21,7 +21,7 @@ type TodosClient interface {
 	CreateTodo(ctx context.Context, in *CreateTodoReq, opts ...grpc.CallOption) (*CreateTodoResp, error)
 	ReadTodo(ctx context.Context, in *ReadTodoReq, opts ...grpc.CallOption) (*ReadTodoResp, error)
 	ReadAllTodo(ctx context.Context, in *ReadAllTodoReq, opts ...grpc.CallOption) (*ReadAllTodoResp, error)
-	UpdateTodo(ctx context.Context, in *UpdateTodoReq, opts ...grpc.CallOption) (*ReadTodoResp, error)
+	UpdateTodo(ctx context.Context, in *UpdateTodoReq, opts ...grpc.CallOption) (*UpdateTodoResp, error)
 	DeleteTodo(ctx context.Context, in *DeleteTodoReq, opts ...grpc.CallOption) (*DeleteTodoResp, error)
 }
 
@@ -60,8 +60,8 @@ func (c *todosClient) ReadAllTodo(ctx context.Context, in *ReadAllTodoReq, opts 
 	return out, nil
 }
 
-func (c *todosClient) UpdateTodo(ctx context.Context, in *UpdateTodoReq, opts ...grpc.CallOption) (*ReadTodoResp, error) {
-	out := new(ReadTodoResp)
+func (c *todosClient) UpdateTodo(ctx context.Context, in *UpdateTodoReq, opts ...grpc.CallOption) (*UpdateTodoResp, error) {
+	out := new(UpdateTodoResp)
 	err := c.cc.Invoke(ctx, "/todorpc.Todos/UpdateTodo", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -85,7 +85,7 @@ type TodosServer interface {
 	CreateTodo(context.Context, *CreateTodoReq) (*CreateTodoResp, error)
 	ReadTodo(context.Context, *ReadTodoReq) (*ReadTodoResp, error)
 	ReadAllTodo(context.Context, *ReadAllTodoReq) (*ReadAllTodoResp, error)
-	UpdateTodo(context.Context, *UpdateTodoReq) (*ReadTodoResp, error)
+	UpdateTodo(context.Context, *UpdateTodoReq) (*UpdateTodoResp, error)
 	DeleteTodo(context.Context, *DeleteTodoReq) (*DeleteTodoResp, error)
 	mustEmbedUnimplementedTodosServer()
 }
@@ -103,7 +103,7 @@ func (UnimplementedTodosServer) ReadTodo(context.Context, *ReadTodoReq) (*ReadTo
 func (UnimplementedTodosServer) ReadAllTodo(context.Context, *ReadAllTodoReq) (*ReadAllTodoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadAllTodo not implemented")
 }
-func (UnimplementedTodosServer) UpdateTodo(context.Context, *UpdateTodoReq) (*ReadTodoResp, error) {
+func (UnimplementedTodosServer) UpdateTodo(context.Context, *UpdateTodoReq) (*UpdateTodoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTodo not implemented")
 }
 func (UnimplementedTodosServer) DeleteTodo(context.Context, *DeleteTodoReq) (*DeleteTodoResp, error) {

@@ -11,7 +11,7 @@ service Todos {
     rpc CreateTodo (CreateTodoReq) returns (CreateTodoResp) {}
     rpc ReadTodo (ReadTodoReq) returns (ReadTodoResp) {}
     rpc ReadAllTodo (ReadAllTodoReq) returns (ReadAllTodoResp) {}
-    rpc UpdateTodo (UpdateTodoReq) returns (ReadTodoResp) {}
+    rpc UpdateTodo (UpdateTodoReq) returns (UpdateTodoResp) {}
     rpc DeleteTodo (DeleteTodoReq) returns (DeleteTodoResp) {}
 }
 
