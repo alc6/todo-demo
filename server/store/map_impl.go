@@ -23,6 +23,7 @@ type MapStore struct {
 	sync.RWMutex
 }
 
+// NewMapStore returns a new MapStore.
 func NewMapStore(logger *zap.Logger) *MapStore {
 	mapStore := MapStore{
 		todosStore: make(map[string]Todo),
@@ -32,6 +33,7 @@ func NewMapStore(logger *zap.Logger) *MapStore {
 	return &mapStore
 }
 
+// CreateTodo create an entry in the MapStore, and returns id as string (uuid).
 func (ms *MapStore) CreateTodo(todo *Todo) (string, error) {
 	ms.Lock()
 	defer ms.Unlock()
@@ -45,6 +47,9 @@ func (ms *MapStore) CreateTodo(todo *Todo) (string, error) {
 	return generatedID, nil
 }
 
+// ReadTodos reads all the tasks given ids.
+// Empty ids slice reads all the entries stores.
+// stopIfMiss set to true will return error if an id among ids is not actually stored.
 func (ms *MapStore) ReadTodos(ids []string, stopIfMiss bool) ([]*Todo, error) {
 	ms.RLock()
 	defer ms.RUnlock()
@@ -80,6 +85,7 @@ func (ms *MapStore) ReadTodos(ids []string, stopIfMiss bool) ([]*Todo, error) {
 	return readTodos, nil
 }
 
+// UpdateTodosStatus changes status of a task entry given its id to the new todoStatus.
 func (ms *MapStore) UpdateTodosStatus(id string, newStatus TodoStatus) error {
 	ms.Lock()
 	defer ms.Unlock()
@@ -96,10 +102,15 @@ func (ms *MapStore) UpdateTodosStatus(id string, newStatus TodoStatus) error {
 	return nil
 }
 
+// UpdateTodos update all the values of a slice of a task.
+// Currently not implemented.
 func (ms *MapStore) UpdateTodos(_ []*Todo) error {
 	return ErrUnimplemented
 }
 
+// DeleteTodos deletes all the tasks given ids.
+// Empty ids slice deletes all the entries stores.
+// stopIfMiss set to true will return error if an id among ids is not actually stored.
 func (ms *MapStore) DeleteTodos(ids []string, stopIfMiss bool) error {
 	ms.Lock()
 	defer ms.Unlock()

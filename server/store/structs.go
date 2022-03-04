@@ -10,6 +10,7 @@ import (
 	"github.com/alc6/todo-demo/proto/todorpc"
 )
 
+// Todo tasks you expect to... do.
 type Todo struct {
 	ID            string        `json:"id,omitempty"`
 	Title         string        `json:"title,omitempty"`
@@ -31,6 +32,7 @@ const (
 	TODO_STATUS_EXPIRED  TodoStatus = 4
 )
 
+// TodoToGRPCStruct converts to a *todorpc.TodoWithMeta.
 func (t *Todo) TodoToGRPCStruct() *todorpc.TodoWithMeta {
 	grpcStruct := todorpc.TodoWithMeta{
 		Id:            t.ID,
@@ -45,6 +47,7 @@ func (t *Todo) TodoToGRPCStruct() *todorpc.TodoWithMeta {
 	return &grpcStruct
 }
 
+// TodoFromGRPCStruct convert a todoGRPCStruct to a Todo.
 func TodoFromGRPCStruct(todoGRPCStruct *todorpc.TodoWithMeta) *Todo {
 	todo := Todo{
 		ID:            todoGRPCStruct.GetId(),
