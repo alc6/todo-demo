@@ -15,12 +15,14 @@ import (
 
 const serviceName = "todo_server"
 
+// instrumentedGRPCServer grpc server enhanced with opentrace.
 type instrumentedGRPCServer struct {
 	grpcServer      *grpc.Server
 	openTrace       opentracing.Tracer
 	openTraceCloser io.Closer
 }
 
+// newInstrumentedGRPCServer returns an instrumentedGRPCServer with instrumentation ready for jaeger.
 func newInstrumentedGRPCServer() (*instrumentedGRPCServer, error) {
 	var igrpc instrumentedGRPCServer
 
