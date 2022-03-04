@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"io"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
@@ -54,4 +55,16 @@ func newInstrumentedGRPCServer() (*instrumentedGRPCServer, error) {
 	)
 
 	return &igrpc, nil
+}
+
+// retrieveSpanFromContext try to retrieve span from a given context.
+// Returns a new span if none is found in ctx.
+func retrieveSpanFromContext(ctx context.Context, operationName string) opentracing.Span {
+	span := opentracing.SpanFromContext(ctx)
+
+	if span == nil {
+		span, _ = opentracing.StartSpanFromContext(ctx, operationName)
+	}
+
+	return span
 }
