@@ -1,0 +1,25 @@
+# Todo-demo
+
+
+## gRPC UI 
+`grpcui -plaintext localhost:27015`
+
+## Jaeger
+### Retrieve and run jaeger image
+```shell
+docker run -d --name jaeger \                                      22:01:46
+  -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
+  -p 5775:5775/udp \
+  -p 6831:6831/udp \
+  -p 6832:6832/udp \
+  -p 5778:5778 \
+  -p 16686:16686 \
+  -p 14250:14250 \
+  -p 14268:14268 \
+  -p 14269:14269 \
+  -p 9411:9411 \
+  jaegertracing/all-in-one:1.31
+```
+
+### Visit UI
+Visit http://localhost:16686
