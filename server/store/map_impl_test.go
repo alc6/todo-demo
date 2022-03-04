@@ -24,7 +24,7 @@ func TestMapStore_CreateReadTodo(t *testing.T) {
 		Description:   "Very first description",
 		Deadline:      time.Now().Add(7 * 24 * time.Hour),
 		Assignee:      "Me",
-		TimeAllocated: time.Duration(7 * time.Second),
+		TimeAllocated: 7 * time.Second,
 		Status:        store.TODO_STATUS_PENDING,
 	}
 
@@ -80,7 +80,7 @@ func TestMapStore_UpdateTodosStatus(t *testing.T) {
 		Description:   "Very first description",
 		Deadline:      time.Now().Add(7 * 24 * time.Hour),
 		Assignee:      "Me",
-		TimeAllocated: time.Duration(7 * time.Second),
+		TimeAllocated: 7 * time.Second,
 		Status:        store.TODO_STATUS_PENDING,
 	}
 
@@ -124,7 +124,7 @@ func TestMapStore_CreateDeleteTodo(t *testing.T) {
 		Description:   "Very first description",
 		Deadline:      time.Now().Add(7 * 24 * time.Hour),
 		Assignee:      "Me",
-		TimeAllocated: time.Duration(7 * time.Second),
+		TimeAllocated: 7 * time.Second,
 		Status:        store.TODO_STATUS_PENDING,
 	}
 

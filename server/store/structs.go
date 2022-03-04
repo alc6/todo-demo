@@ -22,6 +22,7 @@ type Todo struct {
 
 type TodoStatus int32
 
+// nolint: revive, stylecheck
 const (
 	TODO_STATUS_PENDING  TodoStatus = 0
 	TODO_STATUS_DOING    TodoStatus = 1
@@ -30,7 +31,7 @@ const (
 	TODO_STATUS_EXPIRED  TodoStatus = 4
 )
 
-func (t Todo) TodoToGRPCStruct() *todorpc.TodoWithMeta {
+func (t *Todo) TodoToGRPCStruct() *todorpc.TodoWithMeta {
 	grpcStruct := todorpc.TodoWithMeta{
 		Id:            t.ID,
 		Title:         t.Title,
@@ -44,15 +45,15 @@ func (t Todo) TodoToGRPCStruct() *todorpc.TodoWithMeta {
 	return &grpcStruct
 }
 
-func TodoFromGRPCStruct(todoRpcStruct *todorpc.TodoWithMeta) *Todo {
+func TodoFromGRPCStruct(todoGRPCStruct *todorpc.TodoWithMeta) *Todo {
 	todo := Todo{
-		ID:            todoRpcStruct.GetId(),
-		Title:         todoRpcStruct.GetTitle(),
-		Description:   todoRpcStruct.GetDescription(),
-		Deadline:      todoRpcStruct.GetDeadline().AsTime(),
-		Assignee:      todoRpcStruct.GetAssignee(),
-		TimeAllocated: todoRpcStruct.GetTimeAllocated().AsDuration(),
-		Status:        TodoStatus(todoRpcStruct.GetStatus()),
+		ID:            todoGRPCStruct.GetId(),
+		Title:         todoGRPCStruct.GetTitle(),
+		Description:   todoGRPCStruct.GetDescription(),
+		Deadline:      todoGRPCStruct.GetDeadline().AsTime(),
+		Assignee:      todoGRPCStruct.GetAssignee(),
+		TimeAllocated: todoGRPCStruct.GetTimeAllocated().AsDuration(),
+		Status:        TodoStatus(todoGRPCStruct.GetStatus()),
 	}
 
 	return &todo
