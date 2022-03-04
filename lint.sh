@@ -1,0 +1,1 @@
+golangci-lint run -c lint/golangci.yml --skip-dirs grpc/interceptors/ --timeout 5m
